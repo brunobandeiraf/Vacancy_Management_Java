@@ -7,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +24,7 @@ public class CandidateEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
-  
+
   //@Column(name="nome_usuário")
   private String name;
 
