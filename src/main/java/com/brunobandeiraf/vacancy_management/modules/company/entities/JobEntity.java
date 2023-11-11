@@ -29,7 +29,7 @@ public class JobEntity {
   // 1:N
   @ManyToOne()
   // Na Entidade Company e o atributo id
-  @JoinColumn(name = "company_id")
+  @JoinColumn(name = "company_id", insertable = false, updatable = false)
   private CompanyEntity companyEntity;
 
   @Column(name = "company_id")

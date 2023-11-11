@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.brunobandeiraf.vacancy_management.exceptions.UserFoundException;
 import com.brunobandeiraf.vacancy_management.modules.candidate.CandidateEntity;
 import com.brunobandeiraf.vacancy_management.modules.candidate.useCases.CreateCandidateUseCase;
 import jakarta.validation.Valid;
