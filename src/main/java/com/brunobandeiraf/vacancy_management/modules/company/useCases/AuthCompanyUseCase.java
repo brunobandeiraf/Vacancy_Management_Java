@@ -13,6 +13,9 @@ import com.brunobandeiraf.vacancy_management.modules.company.repositories.Compan
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
+import java.time.Duration;
+import java.time.Instant;
+
 @Service
 public class AuthCompanyUseCase {
 
@@ -51,6 +54,7 @@ public class AuthCompanyUseCase {
 
     // Geração de token
     var token = JWT.create().withIssuer("javagas")
+        .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
         .withSubject(company.getId().toString()).sign(algorithm);
 
     return token;
