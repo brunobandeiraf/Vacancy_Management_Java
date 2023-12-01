@@ -5,7 +5,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.brunobandeiraf.vacancy_management.modules.candidate.CandidateEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import com.brunobandeiraf.vacancy_management.modules.candidate.CandidateRepository;
 import com.brunobandeiraf.vacancy_management.exceptions.UserFoundException;
 
