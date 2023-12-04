@@ -7,14 +7,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import javax.naming.AuthenticationException;
 
-import com.brunobandeiraf.vacancy_management.modules.company.dto.AuthCompanyDTO;
 import com.brunobandeiraf.vacancy_management.modules.company.repositories.CompanyRepository;
+import com.brunobandeiraf.vacancy_management.modules.company.dto.AuthCompanyDTO;
+import com.brunobandeiraf.vacancy_management.modules.company.dto.AuthCompanyResponseDTO;
+
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 
 @Service
 public class AuthCompanyUseCase {
@@ -29,7 +32,7 @@ public class AuthCompanyUseCase {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  public String execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
+  public AuthCompanyResponseDTO execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
     
     // Verifica se o usuário existe
     var company = this.companyRepository.findByUsername(authCompanyDTO.getUsername())
@@ -52,12 +55,22 @@ public class AuthCompanyUseCase {
     // O tipo do algoritmo do token
     Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
+    var expiresIn = Instant.now().plus(Duration.ofMinutes(10));
+
     // Geração de token
     var token = JWT.create().withIssuer("javagas")
-        .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
-        .withSubject(company.getId().toString()).sign(algorithm);
+      .withExpiresAt(expiresIn)
+      .withSubject(company.getId().toString())
+      .withClaim("roles", Arrays.asList("COMPANY"))
+      .sign(algorithm);
 
-    return token;
+    var authCompanyResponseDTO = AuthCompanyResponseDTO.builder()
+      .access_token(token)
+      .expires_in(expiresIn.toEpochMilli())
+      .build();
+
+    return authCompanyResponseDTO;
+
 
   }
 }
