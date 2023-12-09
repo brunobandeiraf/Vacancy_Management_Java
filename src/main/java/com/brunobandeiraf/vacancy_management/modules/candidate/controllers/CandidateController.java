@@ -1,5 +1,13 @@
 package com.brunobandeiraf.vacancy_management.modules.candidate.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.util.UUID;
 import java.util.List;
 
@@ -49,6 +57,13 @@ public class CandidateController {
 
   @GetMapping("/")
   @PreAuthorize("hasRole('CANDIDATE')")
+   @Tag(name = "Candidato", description = "Informações do candidato")
+  @Operation(summary = "Listagem de vagas disponível para o candidato", description = "Essa função é responsável por listar todas as vagas disponíveis, baseada no filtro")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", content = {
+          @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)))
+      })
+  })
   public ResponseEntity<Object> get(HttpServletRequest request) {
     var idCandidate = request.getAttribute("candidate_id");
 
