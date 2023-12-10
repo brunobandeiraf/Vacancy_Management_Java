@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.UUID;
@@ -57,8 +58,9 @@ public class CandidateController {
 
   @GetMapping("/")
   @PreAuthorize("hasRole('CANDIDATE')")
-   @Tag(name = "Candidato", description = "Informações do candidato")
+  @Tag(name = "Candidato", description = "Informações do candidato")
   @Operation(summary = "Listagem de vagas disponível para o candidato", description = "Essa função é responsável por listar todas as vagas disponíveis, baseada no filtro")
+  @SecurityRequirement(name = "jwt_auth")
   @ApiResponses({
       @ApiResponse(responseCode = "200", content = {
           @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)))
