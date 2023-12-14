@@ -27,6 +27,8 @@ import com.brunobandeiraf.vacancy_management.modules.candidate.useCases.CreateCa
 import com.brunobandeiraf.vacancy_management.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import com.brunobandeiraf.vacancy_management.modules.candidate.useCases.ProfileCandidateUseCase;
 import com.brunobandeiraf.vacancy_management.modules.company.entities.JobEntity;
+import com.brunobandeiraf.vacancy_management.modules.candidate.dto.ProfileCandidateResponseDTO;
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -59,13 +61,14 @@ public class CandidateController {
   @GetMapping("/")
   @PreAuthorize("hasRole('CANDIDATE')")
   @Tag(name = "Candidato", description = "Informações do candidato")
-  @Operation(summary = "Listagem de vagas disponível para o candidato", description = "Essa função é responsável por listar todas as vagas disponíveis, baseada no filtro")
-  @SecurityRequirement(name = "jwt_auth")
+  @Operation(summary = "Perfil do candidato", description = "Essa função é responsável por buscar as informações do perfil do candidato")
   @ApiResponses({
       @ApiResponse(responseCode = "200", content = {
-          @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)))
-      })
+          @Content(schema = @Schema(implementation = ProfileCandidateResponseDTO.class))
+      }),
+      @ApiResponse(responseCode = "400", description = "User not found")
   })
+  @SecurityRequirement(name = "jwt_auth")
   public ResponseEntity<Object> get(HttpServletRequest request) {
     var idCandidate = request.getAttribute("candidate_id");
 
@@ -80,6 +83,14 @@ public class CandidateController {
   
   @GetMapping("/job")
   @PreAuthorize("hasRole('CANDIDATE')")
+  @Tag(name = "Candidato", description = "Informações do candidato")
+  @Operation(summary = "Listagem de vagas disponível para o candidato", description = "Essa função é responsável por listar todas as vagas disponíveis, baseada no filtro")
+  @SecurityRequirement(name = "jwt_auth")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", content = {
+          @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)))
+      })
+  })
   public List<JobEntity> findJobByFilter(@RequestParam String filter) {
     return this.listAllJobsByFilterUseCase.execute(filter);
   }
