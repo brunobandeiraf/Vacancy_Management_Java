@@ -2,6 +2,8 @@ package com.brunobandeiraf.vacancy_management.modules.candidate;
 
 import java.util.UUID;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.annotations.CreationTimestamp;
 import jakarta.validation.constraints.Email;
@@ -15,29 +17,31 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-// @Data add para todos os atributos
 @Data
 @Entity(name = "candidate")
-// Nome da Tabela
 public class CandidateEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  //@Column(name="nome_usuário")
+  @Schema(example = "Daniel de Souza", requiredMode = RequiredMode.REQUIRED, description = "Nome do candidato")
   private String name;
 
-  //@Pattern(regexp = "^(?!\\s*$).+", message = "O campo [username] não deve conter espaço")
   @NotBlank
   @Pattern(regexp = "\\S+", message = "O campo [username] não deve conter espaço")
+  @Schema(example = "daniel", requiredMode = RequiredMode.REQUIRED, description = "Username do candidato")
   private String username;
 
   @Email(message = "O campo (email) deve conter um e-mail válido")
+  @Schema(example = "daniel@gmail.com", requiredMode = RequiredMode.REQUIRED, description = "E-mail do candidato")
   private String email;
 
   @Length(min = 10, max = 100, message = "A senha deve conter entre (10) e (100) caracteres")
+  @Schema(example = "admin@1234", minLength = 10, maxLength = 100, requiredMode = RequiredMode.REQUIRED, description = "Senha do candidato")
   private String password;
+
+  @Schema(example = "Desenvolvedor Java", requiredMode = RequiredMode.REQUIRED, description = "Breve descrição do candidato")
   private String description;
   private String curriculum;
 
